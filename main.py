@@ -19,6 +19,26 @@ grey=(147, 147, 147)
 
 font = pygame.font.Font(None, 36)
 
+class tank:
+    class red:
+        spd = 0
+        angle = 0
+        angSpd = 0
+        vel = (0, 0)
+        pos = (winW/2, winH/2)
+        picture='red.png'
+        redimage = pygame.image.load(picture)
+        redf = pygame.transform.scale(redimage, (100, 100))
+    class blue:
+        spd = 0
+        angle = 0
+        angSpd = 0
+        vel = (0, 0)
+        pos = (winW/2, winH/2)
+        picture='blue.png'
+        blueimage = pygame.image.load(picture)
+        bluef = pygame.transform.scale(blueimage, (100, 100))
+
 def main():
     global surface
     surface.fill((white))
