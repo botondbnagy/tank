@@ -31,7 +31,7 @@ class tank:
         pos = (winW/2, winH/2)
         picture='red.png'
         redimage = pygame.image.load(picture)
-        redf = pygame.transform.scale(redimage, (124, 180))
+        redf = pygame.transform.scale(redimage, (100, 100))
         def update():
             tank.red.angle += tank.red.angSpd
             tank.red.pos = triadd(tank.red.pos, tank.red.vel, tank.red.angle)
@@ -44,7 +44,7 @@ class tank:
         pos = (winW/2, winH/2)
         picture='blue.png'
         blueimage = pygame.image.load(picture)
-        bluef = pygame.transform.scale(blueimage, (124, 180))
+        bluef = pygame.transform.scale(blueimage, (100, 100))
         def update():
             tank.blue.pos = add(tank.blue.pos, tank.blue.vel)
             surface.blit(tank.blue.bluef, tank.blue.pos) 
