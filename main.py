@@ -29,7 +29,7 @@ class tank:
         pos = (winW/2, winH/2)
         picture='red.png'
         redimage = pygame.image.load(picture)
-        redf = pygame.transform.scale(redimage, (100, 100))
+        redf = pygame.transform.scale(redimage, (50, 50))
         def update():
             tank.red.angle += tank.red.angSpd
             tank.red.vel = (math.sin(math.radians(tank.red.angle))*tank.red.spd, math.cos(math.radians(tank.red.angle))*tank.red.spd)
@@ -46,7 +46,7 @@ class tank:
         pos = (winW/2, winH/2)
         picture='blue.png'
         blueimage = pygame.image.load(picture)
-        bluef = pygame.transform.scale(blueimage, (100, 100))
+        bluef = pygame.transform.scale(blueimage, (50, 50))
         def update():
             tank.blue.angle += tank.blue.angSpd
             tank.blue.vel = (math.sin(math.radians(tank.blue.angle))*tank.blue.spd, math.cos(math.radians(tank.blue.angle))*tank.blue.spd)
@@ -67,17 +67,17 @@ def main():
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_UP:
-                    tank.red.spd = -2
+                    tank.red.spd = -5
                 if event.key == K_DOWN:
-                    tank.red.spd = 2
+                    tank.red.spd = 5
                 if event.key == K_RIGHT:
                     tank.red.angSpd = -4
                 if event.key == K_LEFT:
                     tank.red.angSpd = 4
                 if event.key == K_w:
-                    tank.blue.spd = -2
+                    tank.blue.spd = -5
                 if event.key == K_s:
-                    tank.blue.spd = 2
+                    tank.blue.spd = 5
                 if event.key == K_d:
                     tank.blue.angSpd = -4
                 if event.key == K_a:
