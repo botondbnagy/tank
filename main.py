@@ -30,6 +30,7 @@ class tank:
         picture='red.png'
         redimage = pygame.image.load(picture)
         redf = pygame.transform.scale(redimage, (50, 50))
+        redf.set_colorkey([255,255,255])
         def update():
             tank.red.angle += tank.red.angSpd
             tank.red.vel = (math.sin(math.radians(tank.red.angle))*tank.red.spd, math.cos(math.radians(tank.red.angle))*tank.red.spd)
@@ -47,6 +48,7 @@ class tank:
         picture='blue.png'
         blueimage = pygame.image.load(picture)
         bluef = pygame.transform.scale(blueimage, (50, 50))
+        bluef.set_colorkey([255,255,255])
         def update():
             tank.blue.angle += tank.blue.angSpd
             tank.blue.vel = (math.sin(math.radians(tank.blue.angle))*tank.blue.spd, math.cos(math.radians(tank.blue.angle))*tank.blue.spd)
