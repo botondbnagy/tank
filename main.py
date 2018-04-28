@@ -76,6 +76,9 @@ def main():
                     tank.red.angSpd = -4
                 if event.key == K_LEFT:
                     tank.red.angSpd = 4
+                if event.key == K_m:
+                	pass
+                    #redtankshootonce
                 if event.key == K_w:
                     tank.blue.spd = -5
                 if event.key == K_s:
@@ -84,6 +87,9 @@ def main():
                     tank.blue.angSpd = -4
                 if event.key == K_a:
                     tank.blue.angSpd = 4
+                if event.key == K_q:
+                	pass
+                    #bluetankshootonce
                 
             if event.type == KEYUP:
                 if event.key == K_UP:
