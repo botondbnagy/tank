@@ -93,7 +93,6 @@ def main():
                     tanklist[0][2] = -4
                 if event.key == K_LEFT:
                     tanklist[0][2] = 4
-                    tank.red.angSpd = 4
                 if event.key == K_m:
                     shoot(tanklist[0])
                 if event.key == K_w:
