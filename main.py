@@ -93,6 +93,9 @@ def main():
                     tanklist[0][2] = -4
                 if event.key == K_LEFT:
                     tanklist[0][2] = 4
+                    tank.red.angSpd = 4
+                if event.key == K_m:
+                    shoot(tanklist[0])
                 if event.key == K_w:
                     tanklist[1][0] = -5
                 if event.key == K_s:
@@ -104,7 +107,7 @@ def main():
                 if event.key == K_m:
                     shoot(tanklist[0])
                 if event.key == K_q:
-                    shoot(tanklist[1])    
+                    shoot(tanklist[1])
             if event.type == KEYUP:
                 if event.key == K_UP:
                     tanklist[0][0] = 0
