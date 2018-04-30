@@ -4,5 +4,5 @@
 - [ ] win/lose - animation, scoring
 - [ ] maps - wall colliders, mapgen
 - [ ] special weapons
-
+- [x] classes and camelCase 
 

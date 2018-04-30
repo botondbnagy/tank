@@ -18,8 +18,9 @@ blue=(0, 0, 255)
 grey=(147, 147, 147)
 
 font = pygame.font.Font(None, 36)
-bulletpic = "bullet.png"
-images = ["red.png", "blue.png", "green.png"]
+
+bulletList = []
+
 def add(a, b):
     return [a[0] + b[0], a[1] + b[1]]
 
@@ -28,66 +29,74 @@ def load(picture, size):
     final = pygame.transform.scale(image, size)
     final.set_colorkey([255,255,255])
     return final
+
+class Tank:
+    speed = 0
+    angle = 0
+    angularSpeed = 0
+    velocity = [0,0]
+    position = [winW/2, winH/2]
     
-#tank = [speed, angle, angular speed, velocity, position, image to blit]
-tanklist = []
-
-def newtank():
-    tanklist.append([0, 0, 0, [0, 0], [winW/2, winH/2], load(images[len(tanklist)], (50, 50))])
-
-def update(tank):
-    tank[1] += tank[2]
-    tank[3] = (math.sin(math.radians(tank[1]))*tank[0], math.cos(math.radians(tank[1]))*tank[0])
-    tank[4] = add(tank[4], tank[3])
+    def  __init__(self, color):
+        self.color = color
     
+    def update(self):
+        self.imageToBlit = load(self.color+".png", (50, 50))
+        self.angle += self.angularSpeed
+        self.velocity = (math.sin(math.radians(self.angle))*self.speed, math.cos(math.radians(self.angle))*self.speed)
+        self.position = add(self.position, self.velocity)
+        blitted = pygame.transform.rotate(self.imageToBlit, self.angle)
+        tank_rect = blitted.get_rect(center=self.position)
+        surface.blit(blitted, tank_rect)
+    def constrain(self):
+        if self.position[0] <= 20:
+            self.position[0]=20
+        if self.position[1] <= 20:
+            self.position[1]=20
+        if self.position[0] >= winW-20:
+            self.position[0]=winW-20
+        if self.position[1] >= winH-20:
+            self.position[1]=winH-20
 
-def draw(tank):
-    blitted = pygame.transform.rotate(tank[5], tank[1])
-    tank_rect = blitted.get_rect(center=tank[4])
-    surface.blit(blitted, tank_rect)
+
+class Bullet:
+    speed = -8
+    velocity = 0
+    lifeSpan = 500
+    
+    def __init__(self, color, angle, position):
+        self.color = color
+        self.angle = angle
+        self.position = position
+
+    def update(self):
+        self.imageToBlit = load("bullet.png", (20, 20))
+        self.velocity = (math.sin(math.radians(self.angle))*self.speed, math.cos(math.radians(self.angle))*self.speed)
+        self.position = add(self.position, self.velocity)
+        blitted = pygame.transform.rotate(self.imageToBlit, self.angle)
+        bullet_rect = blitted.get_rect(center=self.position)
+        surface.blit(blitted, bullet_rect)
+    def constrain(self):
+        if self.position[0] <= 10:
+            self.angle = self.angle*-1
+        elif self.position[1] <= 10:
+            self.angle = 180 - self.angle
+        elif self.position[0] >= winW-10:
+            self.angle = self.angle*-1
+        elif self.position[1] >= winH-10:
+            self.angle = 180 - self.angle
 
 
-newtank()
-newtank()
 
-#bullet = [speed, angle, velocity, position, image to blit, lifespan, owner]
-bulletlist = []
 
-def updatebullet(bullet):
-    bullet[2] = (math.sin(math.radians(bullet[1]))*bullet[0], math.cos(math.radians(bullet[1]))*bullet[0])
-    bullet[3] = add(bullet[3], bullet[2])
 
-def drawbullet(bullet):
-    blitted = pygame.transform.rotate(bullet[4], bullet[1])
-    bullet_rect = blitted.get_rect(center=bullet[3])
-    surface.blit(blitted, bullet_rect)
+redTank=Tank("red")
+blueTank=Tank("blue")
 
 def shoot(tank):
-    bulletlist.append([-8, tank[1], 0, tank[4], load(bulletpic, (20, 20)), 0])
+    bulletList.append(Bullet(tank.color, tank.angle, tank.position))
 
-def constrain(bullet):
-    if bullet[3][0] <= 10:
-        bullet[1] = bullet[1]*-1
-    elif bullet[3][1] <= 10:
-        bullet[1] = 180 - bullet[1]
-    elif bullet[3][0] >= winW-10:
-        bullet[1] = bullet[1]*-1
-    elif bullet[3][1] >= winH-10:
-        bullet[1] = 180 - bullet[1]
-
-
-def constrainTank(tank):
-    if tank[4][0] <= 20:
-        tank[4][0]=20
-    if tank[4][1] <= 20:
-        tank[4][1]=20
-    if tank[4][0] >= winW-20:
-        tank[4][0]=winW-20
-    if tank[4][1] >= winH-20:
-        tank[4][1]=winH-20
-    
-
-    
+#imageToBlit = load(images[color], (50, 50))
 def main():
     global surface
     surface.fill((white))
@@ -99,65 +108,65 @@ def main():
                 sys.exit()
             if event.type == KEYDOWN:
                 if event.key == K_UP:
-                    tanklist[0][0] = -5
+                    redTank.speed = -5
                 if event.key == K_DOWN:
-                    tanklist[0][0] = 5
+                    redTank.speed = 5
                 if event.key == K_RIGHT:
-                    tanklist[0][2] = -4
+                    redTank.angularSpeed = -4
                 if event.key == K_LEFT:
-                    tanklist[0][2] = 4
-                if event.key == K_m:
-                    shoot(tanklist[0])
+                    redTank.angularSpeed = 4
                 if event.key == K_w:
-                    tanklist[1][0] = -5
+                    blueTank.speed = -5
                 if event.key == K_s:
-                    tanklist[1][0] = 5
+                    blueTank.speed = 5
                 if event.key == K_d:
-                    tanklist[1][2] = -4
+                    blueTank.angularSpeed = -4
                 if event.key == K_a:
-                    tanklist[1][2] = 4
+                    blueTank.angularSpeed = 4
                 if event.key == K_m:
-                    shoot(tanklist[0])
+                    shoot(redTank)
                 if event.key == K_q:
-                    shoot(tanklist[1])
+                    shoot(blueTank)
                 if event.key == K_ESCAPE:
                     pygame.quit()
                     sys.exit()
 
             if event.type == KEYUP:
                 if event.key == K_UP:
-                    tanklist[0][0] = 0
+                    redTank.speed = 0
                 if event.key == K_DOWN:
-                    tanklist[0][0] = 0
+                    redTank.speed = 0
                 if event.key == K_RIGHT:
-                    tanklist[0][2] = 0
+                    redTank.angularSpeed = 0
                 if event.key == K_LEFT:
-                    tanklist[0][2] = 0
+                    redTank.angularSpeed = 0
                 if event.key == K_w:
-                    tanklist[1][0] = 0
+                    blueTank.speed = 0
                 if event.key == K_s:
-                    tanklist[1][0] = 0
+                    blueTank.speed = 0
                 if event.key == K_d:
-                    tanklist[1][2] = 0
+                    blueTank.angularSpeed = 0
                 if event.key == K_a:
-                    tanklist[1][2] = 0
+                    blueTank.angularSpeed = 0
             if event.type == VIDEORESIZE:
                         winH = event.h
                         winW = event.w
                         surface = pygame.display.set_mode((winW, winH), RESIZABLE)
         surface.fill((white))
-        for tank in tanklist:
-            constrainTank(tank)
-            update(tank)
-            draw(tank)
+        redTank.update()
+        blueTank.update()
+        redTank.constrain()
+        blueTank.constrain()
             
-        for bullet in bulletlist:
-            constrain(bullet)
-            updatebullet(bullet)
-            bullet[5] += 1
-            drawbullet(bullet)
-            if bullet[5] > 500:
-                bulletlist.remove(bullet)
+        for bullet in bulletList:
+            bullet.constrain()
+            bullet.update()
+            bullet.lifeSpan -= 1
+            if bullet.lifeSpan <= 0:
+                bulletList.remove(bullet)
         pygame.display.update()
         fpsClock.tick(FPS)
 main()
+
+
+
