@@ -5,4 +5,4 @@
 - [ ] maps - wall colliders, mapgen
 - [ ] special weapons
 - [x] classes and camelCase 
-
+- [x] constrain tanks function
