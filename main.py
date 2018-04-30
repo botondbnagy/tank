@@ -30,6 +30,13 @@ def load(picture, size):
     final.set_colorkey([255,255,255])
     return final
 
+def distance(position1, position2):
+    deltaPosX = abs(position1[0] - position2[0])
+    deltaPosY = abs(position1[1] - position2[1])
+    distance = math.sqrt(deltaPosX ** 2 + deltaPosY ** 2)
+    return distance
+
+
 class Tank:
     speed = 0
     angle = 0
@@ -64,10 +71,11 @@ class Bullet:
     velocity = 0
     lifeSpan = 500
     
-    def __init__(self, color, angle, position):
+    def __init__(self, color, angle, position, lifespan):
         self.color = color
         self.angle = angle
         self.position = position
+        self.lifespan = lifespan
 
     def update(self):
         self.imageToBlit = load("bullet.png", (20, 20))
@@ -85,8 +93,14 @@ class Bullet:
             self.angle = self.angle*-1
         elif self.position[1] >= winH-10:
             self.angle = 180 - self.angle
-
-
+    def hitcheck(self, tank):
+        if distance(self.position, tank.position) < 30 and self.lifespan < 470:
+            bulletList.remove(self)
+            print(str(tank) + "just got hit")
+    def decreaseLifespan(self):
+        self.lifespan -= 1
+        if self.lifespan < 0:
+            bulletList.remove(self)
 
 
 
@@ -94,7 +108,7 @@ redTank=Tank("red")
 blueTank=Tank("blue")
 
 def shoot(tank):
-    bulletList.append(Bullet(tank.color, tank.angle, tank.position))
+    bulletList.append(Bullet(tank.color, tank.angle, tank.position, 500))
 
 #imageToBlit = load(images[color], (50, 50))
 def main():
@@ -161,12 +175,9 @@ def main():
         for bullet in bulletList:
             bullet.constrain()
             bullet.update()
-            bullet.lifeSpan -= 1
-            if bullet.lifeSpan <= 0:
-                bulletList.remove(bullet)
+            bullet.hitcheck(redTank)
+            bullet.hitcheck(blueTank)
+            bullet.decreaseLifespan()
         pygame.display.update()
         fpsClock.tick(FPS)
 main()
-
-
-
