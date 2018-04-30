@@ -98,7 +98,7 @@ def shoot(tank):
 
 #imageToBlit = load(images[color], (50, 50))
 def main():
-    global surface
+    global surface, winW, winH
     surface.fill((white))
     while 1:
         events = pygame.event.get
